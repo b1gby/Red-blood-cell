@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -43,6 +44,9 @@ public class PlayerController : MonoBehaviour
         //transform.position = position;
         rigidbody2d.MovePosition(position);
 
+        //检测道具
+        DetectTools();
+
         //状态转换
         SwitchState();
     }
@@ -51,12 +55,26 @@ public class PlayerController : MonoBehaviour
     {
         if (state == PlayerState.resist)
         {
-            Invoke("ResetState", 60);
+            this.GetComponentInChildren<Text>().text = "Resist";
+            Invoke("ResetState", 5);
         }
     }
 
     void ResetState()
     {
+        this.GetComponentInChildren<Text>().text = "";
         state = PlayerState.normal;
+    }
+
+    void DetectTools()
+    {
+        if(UIManager.Instance.gameWnd.ResistUI.transform.GetChild(0).gameObject.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                UIManager.Instance.gameWnd.ResistUI.transform.GetChild(0).gameObject.SetActive(false);
+                state = PlayerState.resist;
+            }
+        }
     }
 }

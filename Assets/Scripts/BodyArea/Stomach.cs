@@ -38,24 +38,33 @@ public class Stomach : BodyBase
         if (ran>0.4)
         {
             Transform ranBody = tile.transform.GetChild((int)Random.Range(0, 6));
-            if(ranBody.name.Contains("lung"))
+            // 随机生成病毒细菌数量
+            int ranNum = (int)Random.Range(3, 6);
+            for(int i =0;i<ranNum;i++)
             {
-                ranBody.GetComponentInChildren<Lung>().InsVirus();
-            }
-            else if(ranBody.name.Contains("stomach"))
-            {
-                Vector2 RanPoint = ranBody.GetComponentInChildren<Stomach>().GetRandomInCol();
-                GameObject go = Instantiate(Virus, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.parent);
+                //如果在lung里
+                if (ranBody.name.Contains("lung"))
+                {
+                    ranBody.GetComponentInChildren<Lung>().InsVirus();
+                }
+                //如果在stomach里
+                else if (ranBody.name.Contains("stomach"))
+                {
+                    Vector2 RanPoint = ranBody.GetComponentInChildren<Stomach>().GetRandomInCol();
+                    GameObject go = Instantiate(Virus, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.parent);
 
-                go.transform.localScale = new Vector3(
-                   Mathf.Abs(go.transform.localScale.x),
-                   go.transform.localScale.y,
-                   go.transform.localScale.z);
+                    go.transform.localScale = new Vector3(
+                       Mathf.Abs(go.transform.localScale.x),
+                       go.transform.localScale.y,
+                       go.transform.localScale.z);
+                }
+                //在其他器官里
+                else
+                {
+                    ranBody.GetComponentInChildren<NormalBody>().InsVirus();
+                }
             }
-            else
-            {
-                ranBody.GetComponentInChildren<NormalBody>().InsVirus();
-            }
+            
            
         }
         //生成抗生物质

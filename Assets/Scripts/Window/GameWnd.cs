@@ -15,6 +15,8 @@ public class GameWnd : WindowRoot
     public Slider slider_kidney;
     public Slider slider_spleen;
 
+    public GameObject ResistUI;
+
     public int dead_num = 0;
 
     protected override void InitWnd()

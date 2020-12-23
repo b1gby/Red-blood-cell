@@ -5,10 +5,13 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance = null;
     private UIManager uiManager;
+
+    private LevelBase level1;
     public void Init()
     {
         Instance = this;
         uiManager = UIManager.Instance;
+
         Debug.Log("Init LevelManager...");
     }
 

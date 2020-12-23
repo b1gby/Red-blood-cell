@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Resist : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class Resist : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            collision.transform.GetComponent<PlayerController>().state = PlayerState.resist;
+            UIManager.Instance.gameWnd.ResistUI.transform.GetChild(0).gameObject.SetActive(true);
+            
             Destroy(this.gameObject);
         }
     }

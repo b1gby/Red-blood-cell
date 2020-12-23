@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
 
     void AutoLoseHealth()
     {
-        health -= 10 * lossP;
+        health -= 1 * lossP;
     }
 
     void DetectO2()

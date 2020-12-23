@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class Grabable : MonoBehaviour
 {
-
     public GameObject player;
 
     private GameObject root;
 
+    private bool isGrabStatusChanged = false;
+    private float GrabStatusChangedTime = 0.5f;
     private bool isChild = false;
+
+    Dictionary<Transform, Vector2[]> bodyAreasCol;
+
+    void Awake()
+    {
+        bodyAreasCol = GameObject.FindGameObjectWithTag("Level").GetComponent<Level1>().BBCol;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,27 +29,67 @@ public class Grabable : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Timer();
+
         if(Vector2.Distance(player.transform.position,this.transform.position) <= 0.8f && 
-            (Input.GetButtonDown("Joystick X") || Input.GetKeyDown(KeyCode.E)))
+            (Input.GetButton("Joystick X") || Input.GetKey(KeyCode.E)))
         {
-            this.transform.SetParent(player.transform);
-            this.transform.localPosition = new Vector2(0, 0.1f);
-            isChild = true;
-            
-        }
-        if(isChild && 
-            (Input.GetButtonUp("Joystick X") || Input.GetKeyUp(KeyCode.E)))
-        {
-            //this.transform.SetParent(player.transform.parent);
-            BodyBase bb = new BodyBase();
-            PolygonCollider2D[] bodyAreasCol = root.GetComponentsInChildren<PolygonCollider2D>();
-            for(int i=0; i<bodyAreasCol.GetLength(0);i++)
+            if(!isChild && !isGrabStatusChanged)
             {
-                if(bb.isPolygonContainsPoint( bodyAreasCol[i].points,this.transform.position-bodyAreasCol[i].transform.position))
-                {
-                    this.transform.SetParent(bodyAreasCol[i].transform.parent);
-                    break;
-                }
+                isChild = true;
+                isGrabStatusChanged = true;
+                GrabStatusChangedTime = 0.5f;
+            }
+               
+            else if(isChild && !isGrabStatusChanged)
+            {
+                isChild = false;
+                isGrabStatusChanged = true;
+                GrabStatusChangedTime = 0.5f;
+            }
+        }
+
+        // 放下
+        if (!isChild)
+        {
+            DropIt();
+        }
+        // 抓取
+        else
+        {
+            GrabIt(player.transform);
+        }
+    }
+
+    void Timer()
+    {
+        //抓取状态改变
+        if(isGrabStatusChanged)
+        {
+            GrabStatusChangedTime-=Time.deltaTime;
+            if(GrabStatusChangedTime <= 0)
+            {
+                isGrabStatusChanged = false;
+            }
+        }
+    }
+
+    void GrabIt(Transform source)
+    {
+        this.transform.SetParent(source);
+        this.transform.localPosition = new Vector2(0, 0.1f);
+    }
+
+    void DropIt()
+    {
+        foreach (KeyValuePair<Transform, Vector2[]> bc in bodyAreasCol)
+        {
+            Vector2 point = this.transform.position - bc.Key.position;
+
+            if (BodyBase.isPolygonContainsPoint(bc.Value, point))
+            {
+                this.transform.SetParent(bc.Key.parent);
+                break;
             }
         }
     }

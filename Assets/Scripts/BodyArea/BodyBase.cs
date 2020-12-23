@@ -14,9 +14,6 @@ public class BodyBase : MonoBehaviour
     [SerializeField]
     protected GameObject player;
 
-    [SerializeField]
-    protected PolygonCollider2D polyCol;
-
     protected Vector2[] Points;
 
     public float max_y = -9999f, max_x = -9999f, min_y = 9999f, min_x = 9999f;
@@ -36,8 +33,9 @@ public class BodyBase : MonoBehaviour
     protected void Init()
     {
         player = GameObject.Find("Player");
-        polyCol = this.transform.GetComponent<PolygonCollider2D>();
-        Points = polyCol.points;
+        Points = this.transform.root.GetComponent<Level1>().BBCol[this.transform];
+
+
         for (int i = 0; i < Points.GetLength(0); i++)
         {
             if (Points[i].y > max_y)
@@ -64,6 +62,7 @@ public class BodyBase : MonoBehaviour
         while (true)
         {
             Vector2 point = new Vector2(Random.Range(min_x, max_x), Random.Range(min_y, max_y));
+            
             if (isPolygonContainsPoint(Points, point))
             {
                 return point;
@@ -71,9 +70,11 @@ public class BodyBase : MonoBehaviour
         }
     }
 
-    public bool isPolygonContainsPoint(Vector2[] points_list, Vector2 point)
+    static public bool isPolygonContainsPoint(Vector2[] points_list, Vector2 point)
     {
+        
         int nCross = 0;
+        
         for (int i = 0; i < points_list.GetLength(0); i++)
         {
             Vector2 p1 = points_list[i];
@@ -95,6 +96,7 @@ public class BodyBase : MonoBehaviour
             }
         }
 
+        
         //交点为偶数，点在外面
         return (nCross % 2 == 1);
     }
