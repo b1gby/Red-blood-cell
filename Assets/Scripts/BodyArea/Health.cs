@@ -48,7 +48,11 @@ public class Health : MonoBehaviour
 
     void AutoLoseHealth()
     {
-        health -= 1 * lossP;
+        if(ValueManager.Instance.CO2List.Count>5)
+        {
+            health -= 3 * lossP;
+        }
+        
     }
 
     void DetectO2()
@@ -63,6 +67,7 @@ public class Health : MonoBehaviour
             {
                 if(child.name == "O2(Clone)")
                 {
+                    ValueManager.Instance.O2List.Remove(child.gameObject);
                     Destroy(child.gameObject);
                     if(isAddBlood)
                     {
@@ -81,6 +86,7 @@ public class Health : MonoBehaviour
             {
                 if (child.name == "CO2(Clone)")
                 {
+                    ValueManager.Instance.CO2List.Remove(child.gameObject);
                     Destroy(child.gameObject);
                 }
             }
@@ -93,6 +99,6 @@ public class Health : MonoBehaviour
 
     public void LossByVirus()
     {
-        health -= 10;
+        health -= 5;
     }
 }

@@ -19,7 +19,7 @@ public class Resist : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "Player" && !UIManager.Instance.gameWnd.ResistUI.transform.GetChild(1).gameObject.activeSelf)
         {
             UIManager.Instance.gameWnd.ResistUI.transform.GetChild(0).gameObject.SetActive(true);
             

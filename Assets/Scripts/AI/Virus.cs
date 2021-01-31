@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Virus : MonoBehaviour
 {
+    public GameObject BelongWhiteCell = null;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,9 @@ public class Virus : MonoBehaviour
         {
             if(collision.transform.GetComponent<PlayerController>().state == PlayerState.resist)
             {
+                ValueManager.Instance.VirusList.Remove(this.gameObject);
                 Destroy(this.gameObject);
+                
             }
             else
             {
@@ -35,6 +38,12 @@ public class Virus : MonoBehaviour
                 Debug.Log("Player is dead!");
             }
             
+        }
+        if(collision.tag == "WhiteCell")
+        {
+            BelongWhiteCell.GetComponent<WhiteBlood>().isGoWork = false;
+            ValueManager.Instance.VirusList.Remove(this.gameObject);
+            Destroy(this.gameObject);
         }
     }
 }

@@ -14,6 +14,10 @@ public class Grabable : MonoBehaviour
 
     Dictionary<Transform, Vector2[]> bodyAreasCol;
 
+    public bool isNotme = false;
+
+    public GameObject Grabber = null;
+
     void Awake()
     {
         bodyAreasCol = GameObject.FindGameObjectWithTag("Level").GetComponent<Level1>().BBCol;
@@ -50,12 +54,12 @@ public class Grabable : MonoBehaviour
         }
 
         // 放下
-        if (!isChild)
+        if (!isChild && !isNotme)
         {
             DropIt();
         }
         // 抓取
-        else
+        else if(!isNotme)
         {
             GrabIt(player.transform);
         }
@@ -74,13 +78,17 @@ public class Grabable : MonoBehaviour
         }
     }
 
-    void GrabIt(Transform source)
+    public void GrabIt(Transform source)
     {
-        this.transform.SetParent(source);
-        this.transform.localPosition = new Vector2(0, 0.1f);
+        if(Grabber == null)
+        {
+            this.transform.SetParent(source);
+            this.transform.localPosition = new Vector2(0, 0.1f);
+            this.Grabber = source.gameObject;
+        }
     }
 
-    void DropIt()
+    public void DropIt()
     {
         foreach (KeyValuePair<Transform, Vector2[]> bc in bodyAreasCol)
         {
@@ -92,5 +100,6 @@ public class Grabable : MonoBehaviour
                 break;
             }
         }
+        this.Grabber = null;
     }
 }

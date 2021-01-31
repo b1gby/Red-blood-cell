@@ -19,6 +19,10 @@ public class GameWnd : WindowRoot
 
     public int dead_num = 0;
 
+    public Text EventName;
+    private bool isEventTxtActive = false;
+    private float timeEventTxtActive = 3f;
+
     protected override void InitWnd()
     {
         base.InitWnd();
@@ -33,6 +37,7 @@ public class GameWnd : WindowRoot
     private void Update()
     {
         DetectGameOver();
+        TimerEvent();
     }
 
     public void UpdateSlider(int health, string slider_name)
@@ -101,6 +106,26 @@ public class GameWnd : WindowRoot
         {
             SetWindSate(false);
             uIManager.checkoutWnd.SetWindSate();
+        }
+    }
+
+    public void UpdateEventTxt(string str)
+    {
+        EventName.text = "事件：" + str;
+        isEventTxtActive = true;
+        timeEventTxtActive = 3f;
+    }
+
+    void TimerEvent()
+    {
+        if(isEventTxtActive)
+        {
+            timeEventTxtActive -= Time.deltaTime;
+            if(timeEventTxtActive <= 0)
+            {
+                EventName.text = "";
+                isEventTxtActive = false;
+            }
         }
     }
 }

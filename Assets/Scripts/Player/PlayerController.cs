@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     // Start is called before the first frame update
     public PlayerState state;
+
+    public GameObject Tile;
+
     private void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -74,6 +77,27 @@ public class PlayerController : MonoBehaviour
             {
                 UIManager.Instance.gameWnd.ResistUI.transform.GetChild(0).gameObject.SetActive(false);
                 state = PlayerState.resist;
+            }
+        }
+        if (UIManager.Instance.gameWnd.ResistUI.transform.GetChild(1).gameObject.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                UIManager.Instance.gameWnd.ResistUI.transform.GetChild(1).gameObject.SetActive(false);
+                for (int i = 0; i < 3; i++)
+                {
+                    Transform ranBody = Tile.transform.GetChild((int)Random.Range(0, 6));
+
+                    //如果在lung里
+                    if (ranBody.name.Contains("lung"))
+                    {
+                        ranBody.GetComponentInChildren<Lung>().InsRedCell();
+                    }
+                    else
+                    {
+                        ranBody.GetComponentInChildren<NormalBody>().InsRedCell();
+                    }
+                }
             }
         }
     }

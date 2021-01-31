@@ -9,9 +9,16 @@ public class BodyBase : MonoBehaviour
     [SerializeField]
     protected GameObject CO2;
     [SerializeField]
-    protected GameObject Virus;
-    //玩家信息
+    protected GameObject virusGO;
     [SerializeField]
+    protected GameObject resistGO;
+    [SerializeField]
+    protected GameObject FeGO;
+    [SerializeField]
+    protected GameObject RedCell;
+    [SerializeField]
+    protected GameObject WhiteCell;
+    //玩家信息
     protected GameObject player;
 
     protected Vector2[] Points;
@@ -34,7 +41,11 @@ public class BodyBase : MonoBehaviour
     {
         player = GameObject.Find("Player");
         Points = this.transform.root.GetComponent<Level1>().BBCol[this.transform];
-
+        
+        //foreach(Vector2 tmp in Points)
+        //{
+        //    Debug.Log(tmp);
+        //}
 
         for (int i = 0; i < Points.GetLength(0); i++)
         {
@@ -100,4 +111,61 @@ public class BodyBase : MonoBehaviour
         //交点为偶数，点在外面
         return (nCross % 2 == 1);
     }
+
+    public void InsVirus()
+    {
+        Vector2 RanPoint = GetRandomInCol();
+        GameObject go = Instantiate(virusGO, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.parent);
+        go.transform.localScale = new Vector3(
+            Mathf.Abs(go.transform.localScale.x),
+            go.transform.localScale.y,
+            go.transform.localScale.z);
+        ValueManager.Instance.VirusList.Add(go);
+    }
+
+
+    public void InsResist()
+    {
+        Vector2 RanPoint = GetRandomInCol();
+        GameObject go = Instantiate(resistGO, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.root);
+        go.transform.localScale = new Vector3(
+            Mathf.Abs(go.transform.localScale.x),
+            go.transform.localScale.y,
+            go.transform.localScale.z);
+    }
+
+    public void InsFe()
+    {
+        Vector2 RanPoint = GetRandomInCol();
+        GameObject go = Instantiate(FeGO, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.root);
+        go.transform.localScale = new Vector3(
+            Mathf.Abs(go.transform.localScale.x),
+            go.transform.localScale.y,
+            go.transform.localScale.z);
+    }
+
+    public void InsRedCell()
+    {
+        Vector2 RanPoint = GetRandomInCol();
+        GameObject go = Instantiate(RedCell, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.root);
+        
+        go.transform.localScale = new Vector3(
+            Mathf.Abs(go.transform.localScale.x),
+            go.transform.localScale.y,
+            go.transform.localScale.z);
+        ValueManager.Instance.RedCellList.Add(go);
+    }
+
+    public void InsWhiteCell()
+    {
+        Vector2 RanPoint = GetRandomInCol();
+        GameObject go = Instantiate(WhiteCell, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.root);
+        
+        go.transform.localScale = new Vector3(
+            Mathf.Abs(go.transform.localScale.x),
+            go.transform.localScale.y,
+            go.transform.localScale.z);
+        ValueManager.Instance.WhiteCellList.Add(go);
+    }
+
 }

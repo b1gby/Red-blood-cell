@@ -31,16 +31,7 @@ public class Lung : BodyBase
             Mathf.Abs(go.transform.localScale.x),
             go.transform.localScale.y,
             go.transform.localScale.z);
+        ValueManager.Instance.O2List.Add(go);
     }
 
-
-    public void InsVirus()
-    {
-        Vector2 RanPoint = GetRandomInCol();
-        GameObject go = Instantiate(Virus, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.parent);
-        go.transform.localScale = new Vector3(
-            Mathf.Abs(go.transform.localScale.x),
-            go.transform.localScale.y,
-            go.transform.localScale.z);
-    }
 }

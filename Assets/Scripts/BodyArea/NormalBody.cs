@@ -9,7 +9,7 @@ public class NormalBody : BodyBase
     {
         
         Init();
-        InvokeRepeating("InsCO2", 0f, 5f);
+        InvokeRepeating("InsCO2", 0f, 10f);
     }
 
     // Update is called once per frame
@@ -25,16 +25,9 @@ public class NormalBody : BodyBase
         go.transform.localScale = new Vector3(
             Mathf.Abs(go.transform.localScale.x),
             go.transform.localScale.y,
-            go.transform.localScale.z); 
+            go.transform.localScale.z);
+        ValueManager.Instance.CO2List.Add(go);
     }
 
-    public void InsVirus()
-    {
-        Vector2 RanPoint = GetRandomInCol();
-        GameObject go = Instantiate(Virus, new Vector3(RanPoint.x, RanPoint.y, 0) + this.transform.position, Quaternion.identity, this.transform.parent);
-        go.transform.localScale = new Vector3(
-            Mathf.Abs(go.transform.localScale.x),
-            go.transform.localScale.y,
-            go.transform.localScale.z);
-    }
+    
 }
